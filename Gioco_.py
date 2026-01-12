@@ -6,7 +6,7 @@ import random
 
 class MyGame(arcade.Window):
     SCREEN_WIDTH = 1000
-    SCREEN_HEIGHT = 600
+    SCREEN_HEIGHT = 700
 
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
@@ -28,14 +28,7 @@ class MyGame(arcade.Window):
         self.left_pressed = False
         self.right_pressed = False
 
-        # self.lista_background = [
-        #     "immagini/Background1.png",
-        #     "immagini/Background2.png",
-        #     "immagini/Background3.png",
-        #     "immagini/Background4.png",
-        #     "immagini/Background5.png",
-        # ]
-
+       
    
 
 
@@ -51,21 +44,13 @@ class MyGame(arcade.Window):
 
         self.playerSpriteList.append(self.macchina)
         
-        self.background = arcade.load_texture("immagini/Background1.png")
+        self.background = arcade.load_texture("immagini/Immagine sfondo.png")
             
 
     def on_draw(self):
         self.clear()
-        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
+        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT) )
 
-
-        # if self.background == arcade.load_texture("immagini/Background1.png"):
-        #     arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
-
-        # else:
-        #     self.background = random.choice([self.lista_background])
-        #     self.background = arcade.load_texture(self.background)
-        #     arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
 
 
         self.playerSpriteList.draw()
@@ -114,16 +99,16 @@ class MyGame(arcade.Window):
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = False
 
-         # Limita movimento dentro lo schermo
-        if self.macchina.center_x < 0:
-             self.macchina.center_x = 0
-        elif self.macchina.center_x > self.width:
-             self.macchina.center_x = self.width
+        #  # Limita movimento dentro lo schermo
+        # if self.macchina.center_x < 0:
+        #      self.macchina.center_x = 0
+        # elif self.macchina.center_x > self.width:
+        #      self.macchina.center_x = self.width
 
-        if self.macchina.center_y < 0:
-             self.macchina.center_y = 0
-        elif self.macchina.center_y > self.height:
-             self.macchina.center_y = self.height
+        # if self.macchina.center_y < 0:
+        #      self.macchina.center_y = 0
+        # elif self.macchina.center_y > self.height:
+        #      self.macchina.center_y = self.height
         
 
 
