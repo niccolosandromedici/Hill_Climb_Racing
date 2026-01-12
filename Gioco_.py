@@ -28,13 +28,16 @@ class MyGame(arcade.Window):
         self.left_pressed = False
         self.right_pressed = False
 
-
-    def on_draw(self):
-        self.playerSpriteList.draw()
-
-
+        # self.lista_background = [
+        #     "immagini/Background1.png",
+        #     "immagini/Background2.png",
+        #     "immagini/Background3.png",
+        #     "immagini/Background4.png",
+        #     "immagini/Background5.png",
+        # ]
 
    
+
 
     def setup(self):
         
@@ -52,44 +55,22 @@ class MyGame(arcade.Window):
             
 
     def on_draw(self):
-        if self.background == arcade.load_texture("immagini/Background1.png"):
-            arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
+        self.clear()
 
-        else:
-            self.background = arcade.load_texture.random.choice([
-                arcade.load_texture("immagini/Background1.png"),
-                arcade.load_texture("immagini/Background2.png"),
-                arcade.load_texture("immagini/Background3.png"),
-                arcade.load_texture("immagini/Background4.png"),
-                arcade.load_texture("immagini/Background5.png"),
-            ])
-
-
-
-        # elif self.background == arcade.load_texture("immagini/Background2.png"):
-        #     self.background = arcade.load_texture("immagini/Background2.png")
+        # if self.background == arcade.load_texture("immagini/Background1.png"):
         #     arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
 
-        # elif self.background == arcade.load_texture("immagini/Background3.png"):
-        #     self.background = arcade.load_texture("immagini/Background3.png")
+        # else:
+        #     self.background = random.choice([self.lista_background])
+        #     self.background = arcade.load_texture(self.background)
         #     arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
-
-        # elif self.background == arcade.load_texture("immagini/Background4.png"):
-        #     self.background = arcade.load_texture("immagini/Background4.png")
-        #     arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
-        
-        # elif self.background == arcade.load_texture("immagini/Background5.png"):
-        #     self.background = arcade.load_texture("immagini/Background5.png")
-        #     arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
-
-
 
 
         self.playerSpriteList.draw()
 
     
     def on_update(self, deltaTime):
-        self.clear()
+        
 
         # Calcola movimento in base ai tasti premuti
         change_x = 0
