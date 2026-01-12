@@ -56,7 +56,7 @@ class MyGame(arcade.Window):
             arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, -75, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT + 75) )
 
         else:
-            arcade.load_texture.random.choice([
+            self.background = arcade.load_texture.random.choice([
                 arcade.load_texture("immagini/Background1.png"),
                 arcade.load_texture("immagini/Background2.png"),
                 arcade.load_texture("immagini/Background3.png"),
