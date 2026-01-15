@@ -7,8 +7,8 @@ from arcade import physics_engines
 
 
 class MyGame(arcade.Window):
-    SCREEN_WIDTH = 1000
-    SCREEN_HEIGHT = 700
+    SCREEN_WIDTH = 900
+    SCREEN_HEIGHT = 600
     
 
     def __init__(self, width, height, title, ):
