@@ -1,15 +1,18 @@
 import arcade
 import os
 import random
+from arcade import physics_engines
+
 
 
 
 class MyGame(arcade.Window):
     SCREEN_WIDTH = 1000
     SCREEN_HEIGHT = 700
+    
 
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
+    def __init__(self, width, height, title, ):
+        super().__init__(width, height, title, fullscreen = False)
 
         self.macchina = None
         self.playerSpriteList = arcade.SpriteList()
@@ -41,6 +44,8 @@ class MyGame(arcade.Window):
         self.macchina.scale_x = 1
         self.macchina.scale_y = 1
         self.macchina.angle = 0
+
+        #self.macchina.fisica = arcade.
 
         self.playerSpriteList.append(self.macchina)
         
@@ -87,6 +92,12 @@ class MyGame(arcade.Window):
             self.left_pressed = True
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = True
+        elif key == arcade.key.F:
+            if fullscreen == False:
+                fullscreen = True
+            else:
+                fullscreen = False
+
 
 
     def on_key_release(self, key, modifiers):
