@@ -69,17 +69,17 @@ class MyGame(arcade.Window):
         change_y = 0
         change_angle = 0
         
-        if self.up_pressed:
-            change_angle -= self.velocita_angle
-        if self.down_pressed:
-            change_angle += self.velocita_angle
+        #if self.up_pressed:
+        #    change_angle -= self.velocita_angle
+        #if self.down_pressed:
+        #    change_angle += self.velocita_angle
         if self.left_pressed:
             change_x -= self.velocita
         if self.right_pressed:
             change_x += self.velocita
         
         # Applica movimento
-        self.macchina.center_x += change_x
+        self.background.center_x += change_x
         self.macchina.center_y += change_y
         self.macchina.angle += change_angle
 
