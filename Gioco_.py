@@ -79,9 +79,9 @@ class MyGame(arcade.Window):
             change_x += self.velocita
         
         # Applica movimento
-        self.background.center_x += change_x
+        self.macchina.center_x += change_x
         self.macchina.center_y += change_y
-        self.macchina.angle += change_angle
+        #self.macchina.angle += change_angle
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.W or key == arcade.key.UP:
