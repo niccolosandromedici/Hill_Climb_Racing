@@ -50,11 +50,11 @@ class MyGame(arcade.Window):
 
         # Create the ground
         # This shows using a loop to place multiple sprites horizontally
-        for x in range(0, 1250, 64):
-            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
-            wall.center_x = x
-            wall.center_y = 250
-            self.wall_list.append(wall)
+        for x in range(-10000, 10000, 64):
+            ground = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
+            ground.center_x = x
+            ground.center_y = 250
+            self.wall_list.append(ground)
 
         # Create a Platformer Physics Engine.
         # This will handle moving our player as well as collisions between
@@ -65,7 +65,7 @@ class MyGame(arcade.Window):
         # it will not be moved.
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina, walls = self.wall_list, gravity_constant = self.gravity)
 
-        #self.camera = None
+        
 
     def setup(self):
         
@@ -76,21 +76,22 @@ class MyGame(arcade.Window):
         self.macchina.scale_x : int = 1
         self.macchina.scale_y : int = 1
         self.macchina.angle : int = 0
-        #self.camera = arcade.Camera2D()
+
+        self.camera = arcade.Camera2D()
         
 
         self.playerSpriteList.append(self.macchina)
         
-        self.background = arcade.load_texture("immagini/Immagine sfondo.png")
+        self.background = arcade.load_texture("immagini/Sfondo.jpg")
             
 
     def on_draw(self):
         self.clear()
-        arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, 4500, 600) )
+        arcade.draw_texture_rect(self.background, arcade.types.Viewport( self.camera.position[0] - MyGame.SCREEN_WIDTH/2, self.camera.position[1] - MyGame.SCREEN_HEIGHT/3.2, MyGame.SCREEN_WIDTH + 100, MyGame.SCREEN_HEIGHT + 100) )
 
         self.playerSpriteList.draw()
         self.wall_list.draw()
-        #self.camera.use()
+        self.camera.use()
 
     
     def on_update(self, deltaTime):
@@ -98,8 +99,8 @@ class MyGame(arcade.Window):
         self.physics_engine.update()
         
         #movimento camera
-        #self.camera.position = self.macchina.center_x
-        #self.camera.position = self.macchina.center_y
+        self.camera.position = self.macchina.position
+        
 
         # Calcola movimento in base ai tasti premuti
         change_x : int | float = 0
