@@ -22,7 +22,7 @@ class MyGame(arcade.Window):
         self.tile_scaling : int | float = 0.5
         #fisica
         self.gravity : int | float = 1
-        self.jump_speed : int | float = 20
+        #self.jump_speed : int | float = 20
 
         #movimento
         self.velocita : int | float = 4
@@ -132,9 +132,9 @@ class MyGame(arcade.Window):
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = True
             #arcade.play_sound(self.suono_motore)
-        elif key == arcade.key.SPACE:  
-            if self.physics_engine.can_jump():
-                self.macchina.change_y = self.jump_speed
+        #elif key == arcade.key.SPACE:  
+        #    if self.physics_engine.can_jump():
+        #        self.macchina.change_y = self.jump_speed
 
 
 
