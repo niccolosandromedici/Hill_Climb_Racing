@@ -1,6 +1,5 @@
 import arcade
 import os
-import random
 from arcade import physics_engines
 
 
@@ -16,7 +15,14 @@ class MyGame(arcade.Window):
 
         self.macchina = None
         self.playerSpriteList = arcade.SpriteList()
-        
+
+        #scala
+        self.tile_scaling = 0.5
+        #fisica
+        self.gravity : int | float = 1
+        self.jump_speed : int | float = 20
+
+        #movimento
         self.velocita : int | float = 4
         self.velocita_angle : int| float = 1
         
@@ -31,47 +37,75 @@ class MyGame(arcade.Window):
         self.left_pressed : bool = False
         self.right_pressed : bool = False
 
-       
-   
+        
+        # SpriteList for our boxes and ground
+        # Putting our ground and box Sprites in the same SpriteList
+        # will make it easier to perform collision detection against
+        # them later on. Setting the spatial hash to True will make
+        # collision detection much faster if the objects in this
+        # SpriteList do not move.
+        self.wall_list = arcade.SpriteList(use_spatial_hash = True)
 
+        # Create the ground
+        # This shows using a loop to place multiple sprites horizontally
+        for x in range(0, 1250, 64):
+            wall = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
+            wall.center_x = x
+            wall.center_y = 250
+            self.wall_list.append(wall)
+
+        # Create a Platformer Physics Engine.
+        # This will handle moving our player as well as collisions between
+        # the player sprite and whatever SpriteList we specify for the walls.
+        # It is important to supply static platforms to the walls parameter. There is a
+        # platforms parameter that is intended for moving platforms.
+        # If a platform is supposed to move, and is added to the walls list,
+        # it will not be moved.
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina, walls = self.wall_list, gravity_constant = self.gravity)
+
+        self.camera = None
 
     def setup(self):
         
         self.macchina = arcade.Sprite("./immagini/78614.png")
 
         self.macchina.center_x : int | float = 100
-        self.macchina.center_y : int | float = 200
+        self.macchina.center_y : int | float = 250
         self.macchina.scale_x : int | float = 1
         self.macchina.scale_y : int | float = 1
         self.macchina.angle : int | float = 0
 
+        self.camera = arcade.Camera2D()
+        
+        
 
         self.playerSpriteList.append(self.macchina)
         
-        self.background = arcade.load_texture("immagini/Immagine sfondo.png")
+        self.background = arcade.load_texture("immagini/Background1.png")
             
 
     def on_draw(self):
         self.clear()
         arcade.draw_texture_rect(self.background, arcade.types.Viewport( 0, 0, MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT) )
 
-
-
         self.playerSpriteList.draw()
+        self.wall_list.draw()
 
     
     def on_update(self, deltaTime):
+        
+        self.physics_engine.update()
         
 
         # Calcola movimento in base ai tasti premuti
         change_x : int | float = 0
         change_y : int | float = 0
-        #change_angle : int | float = 0
+        change_angle : int | float = 0
         
-        #if self.up_pressed:
-        #    change_angle -= self.velocita_angle
-        #if self.down_pressed:
-        #    change_angle += self.velocita_angle
+        if self.up_pressed:
+            change_angle -= self.velocita_angle
+        if self.down_pressed:
+            change_angle += self.velocita_angle
         if self.left_pressed:
             change_x -= self.velocita
         if self.right_pressed:
@@ -80,7 +114,7 @@ class MyGame(arcade.Window):
         # Applica movimento
         self.macchina.center_x += change_x
         self.macchina.center_y += change_y
-        #self.macchina.angle += change_angle
+        self.macchina.angle += change_angle
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.W or key == arcade.key.UP:
@@ -96,6 +130,10 @@ class MyGame(arcade.Window):
                 fullscreen = True
             else:
                 fullscreen = False
+        elif key == arcade.key.SPACE:  
+            if self.physics_engine.can_jump():
+                self.macchina.change_y = self.jump_speed
+
 
 
 
@@ -109,16 +147,16 @@ class MyGame(arcade.Window):
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = False
 
-        #  # Limita movimento dentro lo schermo
-        # if self.macchina.center_x < 0:
-        #      self.macchina.center_x = 0
-        # elif self.macchina.center_x > self.width:
-        #      self.macchina.center_x = self.width
+        # Limita movimento dentro lo schermo
+        if self.macchina.center_x < 0:
+              self.macchina.center_x = 0
+        elif self.macchina.center_x > self.width:
+              self.macchina.center_x = self.width
 
-        # if self.macchina.center_y < 0:
-        #      self.macchina.center_y = 0
-        # elif self.macchina.center_y > self.height:
-        #      self.macchina.center_y = self.height
+        if self.macchina.center_y < 0:
+              self.macchina.center_y = 0
+        elif self.macchina.center_y > self.height:
+              self.macchina.center_y = self.height
         
 
 
