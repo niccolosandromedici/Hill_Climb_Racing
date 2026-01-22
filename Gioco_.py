@@ -1,8 +1,9 @@
 import arcade
 import os
-from arcade import physics_engines
 
 
+#https://api.arcade.academy/en/stable/tutorials/platform_tutorial/step_07.html
+#sito con tutta la documentazione necessaria per il mio gioco
 
 
 class MyGame(arcade.Window):
@@ -17,7 +18,7 @@ class MyGame(arcade.Window):
         self.playerSpriteList = arcade.SpriteList()
 
         #scala
-        self.tile_scaling = 0.5
+        self.tile_scaling : int | float = 0.5
         #fisica
         self.gravity : int | float = 1
         self.jump_speed : int | float = 20
