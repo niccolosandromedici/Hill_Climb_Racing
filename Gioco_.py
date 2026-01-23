@@ -202,10 +202,12 @@ class MyGame(arcade.Window):
             self.down_pressed = True
         elif key == arcade.key.A or key == arcade.key.LEFT:
             self.left_pressed = True
-            #arcade.play_sound(self.suono_motore)
+            if not self.suono_motore.is_playing:
+                arcade.play_sound(self.suono_motore)
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = True
-            #arcade.play_sound(self.suono_motore)
+            if not self.suono_motore.is_playing:
+                arcade.play_sound(self.suono_motore)
         #elif key == arcade.key.SPACE:  
         #    if self.physics_engine.can_jump():
         #        self.macchina.change_y = self.jump_speed
@@ -220,10 +222,13 @@ class MyGame(arcade.Window):
             self.down_pressed = False
         elif key == arcade.key.A or key == arcade.key.LEFT:
             self.left_pressed = False
-            #self.suono_motore.set_volume(0.0)
+            if self.suono_motore.is_playing:
+                arcade.stop_sound(self.suono_motore)
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = False
-            #self.suono_motore.set_volume(0.0)
+            if self.suono_motore.is_playing:
+                arcade.stop_sound(self.suono_motore)
+            
 
 
 
