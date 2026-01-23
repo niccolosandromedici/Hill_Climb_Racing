@@ -87,7 +87,7 @@ class MyGame(arcade.Window):
         #crea monete iniziali
         for i in range(5):
             self.crea_monete(tipo = "oro")
-
+        self.crea_monete(tipo = "diamante")
 
         # Set up the camera
         self.camera = arcade.Camera2D()
@@ -238,6 +238,7 @@ class MyGame(arcade.Window):
                 self.conta_monete_prese += 1
                 self.testo_score.text = f"Punteggio: {self.conta_monete_prese}"
                 collisioni[0].remove_from_sprite_lists()
+                self.crea_monete(tipo = "oro")
                 #print("moneta presa! Punteggio:", self.conta_monete_prese)
 
             #da implementare con dei diamanti o altro
@@ -245,10 +246,10 @@ class MyGame(arcade.Window):
             #     self.conta_monete_prese += 100
             #     self.testo_score.text = f"Punteggio: {self.conta_monete_prese}"
             #     collisioni[0].remove_from_sprite_lists()
+            #     self.crea_monete(tipo = "diamante")
             #     #print("Golden Biscotto mangiato! Punteggio:", self.conta_monete_prese)
-            # # Creazione nuovi biscotti in base al punteggio
-            self.crea_monete(tipo = "oro")
-
+           
+            
 
 
 
