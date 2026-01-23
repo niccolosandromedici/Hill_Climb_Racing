@@ -135,31 +135,32 @@ class MyGame(arcade.Window):
         while abs(next_x - self.macchina.center_x) < 100 :
             next_x = (MyGame.MONETA_WIDTH/2) + (self.macchina.center_x + random.randint(100, (MyGame.SCREEN_WIDTH - MyGame.MONETA_WIDTH)))%(MyGame.SCREEN_WIDTH - MyGame.MONETA_WIDTH)
 
-        next_y = self.macchina.center_y + 100
+        next_y = self.macchina.center_y + 80
 
         # while abs(next_y - self.macchina.center_y) < 100 :
         #     next_y = (MyGame.MONETA_HEIGHT/2) + (self.macchina.center_y + random.randint(100, (MyGame.SCREEN_HEIGHT - MyGame.MONETA_HEIGHT)))%(MyGame.SCREEN_HEIGHT - MyGame.MONETA_HEIGHT)
 
         print("[",self.macchina.center_x,"][", self.macchina.center_y,"] = > moneta creata in: [",next_x, "] [", next_y, "]")
 
-        if tipo == "oro":
-            cookie = arcade.Sprite("./immagini/moneta.jpg")
-            self.moneta.center_x = next_x
-            self.moneta.center_y = next_y
-            self.moneta.scale = 0.2
-            self.moneta_list.append(self.moneta)
 
-        else:
-            pass
+        while tipo == "oro" and len(self.moneta_list) < 5 :
+            if tipo == "oro":
+                self.moneta = arcade.Sprite("./immagini/moneta.jpg")
+                self.moneta.center_x = next_x
+                self.moneta.center_y = next_y
+                self.moneta.scale = 0.2
+                self.moneta_list.append(self.moneta)
+            else:
+                pass
             # Implementare altri tipi di monete o oggetti se necessario
 
         # def rimuovi_diamante(self, Sprite_moneta):
         #     Sprite_moneta.remove_from_sprite_lists()
         #     #print("Golden Cookie scomparso!")
-
-        def rimuovi_moneta(self, Sprite_moneta):
-            Sprite_moneta.remove_from_sprite_lists()
-            #print("Cookie scomparso!")
+        #
+    def rimuovi_moneta(self, Sprite_moneta):
+        Sprite_moneta.remove_from_sprite_lists()
+        #print("Moneta scomparsa!")
         
 
 
@@ -202,12 +203,12 @@ class MyGame(arcade.Window):
             self.down_pressed = True
         elif key == arcade.key.A or key == arcade.key.LEFT:
             self.left_pressed = True
-            if not self.suono_motore.is_playing:
-                arcade.play_sound(self.suono_motore)
+            #if not self.suono_motore.is_playing:
+            #    arcade.play_sound(self.suono_motore)
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = True
-            if not self.suono_motore.is_playing:
-                arcade.play_sound(self.suono_motore)
+            #if not self.suono_motore.is_playing:
+            #    arcade.play_sound(self.suono_motore)
         #elif key == arcade.key.SPACE:  
         #    if self.physics_engine.can_jump():
         #        self.macchina.change_y = self.jump_speed
@@ -222,12 +223,12 @@ class MyGame(arcade.Window):
             self.down_pressed = False
         elif key == arcade.key.A or key == arcade.key.LEFT:
             self.left_pressed = False
-            if self.suono_motore.is_playing:
-                arcade.stop_sound(self.suono_motore)
+            #if self.suono_motore.is_playing:
+            #    arcade.stop_sound(self.suono_motore)
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = False
-            if self.suono_motore.is_playing:
-                arcade.stop_sound(self.suono_motore)
+            #if self.suono_motore.is_playing:
+            #    arcade.stop_sound(self.suono_motore)
             
 
 
@@ -238,15 +239,14 @@ class MyGame(arcade.Window):
             if collisioni[0].tipo == "oro":
                 self.conta_monete_prese += 1
                 self.testo_score.text = f"Punteggio: {self.conta_monete_prese}"
-                collisioni[0].remove_from_sprite_lists()
+                collisioni[0].rimuovi_moneta()
                 #print("moneta presa! Punteggio:", self.conta_monete_prese)
-
 
             #da implementare con dei diamanti o altro
             # elif collisioni[0].tipo == "golden":
             #     self.conta_monete_prese += 100
             #     self.testo_score.text = f"Punteggio: {self.conta_monete_prese}"
-            #     collisioni[0].remove_from_sprite_lists()
+            #     collisioni[0].rimuovi_moneta()
             #     #print("Golden Biscotto mangiato! Punteggio:", self.conta_monete_prese)
             # # Creazione nuovi biscotti in base al punteggio
             self.crea_monete()
