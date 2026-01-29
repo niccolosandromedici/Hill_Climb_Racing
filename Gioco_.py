@@ -59,7 +59,7 @@ class MyGame(arcade.Window):
 
         # Create the ground
         # This shows using a loop to place multiple sprites horizontally
-        for x in range(-10000, 10000, 64):
+        for x in range(-350, 100000, 64):
             ground = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
             ground.center_x = x
             ground.center_y = 250
@@ -109,8 +109,8 @@ class MyGame(arcade.Window):
         #scrivi testo punteggio delle monete
         self.testo_score_monete = arcade.Text( #testo del punteggio
             text="Monete: " + str(self.conta_monete_prese),
-            x = self.macchina1.center_x, # Centro dello schermo
-            y = self.macchina1.center_y + 350, # Vicino in alto
+            x = self.macchina1.center_x,
+            y = self.macchina1.center_y + 350,
             color = arcade.color.BLACK,
             font_size = 24,
             font_name = "Arial", # O il nome del tuo font caricato
@@ -120,8 +120,8 @@ class MyGame(arcade.Window):
         #scrivi testo punteggio dei diamanti
         self.testo_score_diamanti = arcade.Text( #testo del punteggio
             text="Diamanti: " + str(self.conta_diamanti_presi),
-            x = self.macchina1.center_x, # Centro dello schermo
-            y = self.macchina1.center_y + 300, # Vicino in alto
+            x = self.macchina1.center_x,
+            y = self.macchina1.center_y + 300, 
             color = arcade.color.BLACK,
             font_size = 24,
             font_name = "Arial", # O il nome del tuo font caricato
