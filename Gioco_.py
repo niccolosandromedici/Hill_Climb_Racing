@@ -65,6 +65,15 @@ class MyGame(arcade.Window):
             ground.center_y = 250
             self.wall_list.append(ground)
 
+        for y in range(-10000, 10000, 64):
+            start_wall = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
+            start_wall.center_x = -385
+            start_wall.center_y = y
+            self.wall_list.append(start_wall)
+
+
+
+
         # Create a Platformer Physics Engine.
         # This will handle moving our player as well as collisions between
         # the player sprite and whatever SpriteList we specify for the walls.
@@ -234,6 +243,23 @@ class MyGame(arcade.Window):
             change_x -= self.velocita
         if self.right_pressed:
             change_x += self.velocita
+
+        # Gestione collisioni
+        collisioni = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)        
+        if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
+            if collisioni[0].tipo == "oro":
+                self.conta_monete_prese += 1
+                self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
+                collisioni[0].remove_from_sprite_lists()
+                self.crea_monete(tipo = "oro")
+                #print("moneta presa! Punteggio:", self.conta_monete_prese)
+
+            elif collisioni[0].tipo == "diamante":
+                self.conta_diamanti_presi += 1
+                self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
+                collisioni[0].remove_from_sprite_lists()
+                self.crea_monete(tipo = "diamante")
+                #print("Diamante preso! Punteggio:", self.conta_diamanti_presi)
         
         # Applica movimento
         self.macchina1.center_x += change_x
@@ -254,8 +280,9 @@ class MyGame(arcade.Window):
             #if not self.suono_motore.is_playing:
             #    arcade.play_sound(self.suono_motore)
         # elif key == arcade.key.SPACE:  
-        #     if self.physics_engine.can_jump():
+        #      if self.physics_engine.can_jump():
         #         self.macchina1.change_y = self.jump_speed
+                
 
 
 
@@ -276,24 +303,6 @@ class MyGame(arcade.Window):
             
 
 
-
-         # Gestione collisioni
-        collisioni = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)        
-        if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
-            if collisioni[0].tipo == "oro":
-                self.conta_monete_prese += 1
-                self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
-                collisioni[0].remove_from_sprite_lists()
-                self.crea_monete(tipo = "oro")
-                #print("moneta presa! Punteggio:", self.conta_monete_prese)
-
-            elif collisioni[0].tipo == "diamante":
-                self.conta_diamanti_presi += 1
-                self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
-                collisioni[0].remove_from_sprite_lists()
-                self.crea_monete(tipo = "diamante")
-                #print("Diamante preso! Punteggio:", self.conta_diamanti_presi)
-            
 
         # # Limita movimento dentro lo schermo
         # if self.macchina.center_x < 0:
