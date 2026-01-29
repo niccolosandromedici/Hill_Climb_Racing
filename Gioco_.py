@@ -9,8 +9,8 @@ import random
 class MyGame(arcade.Window):
     SCREEN_WIDTH : int = 900
     SCREEN_HEIGHT : int = 600
-    MONETA_WIDTH : int = 32
-    MONETA_HEIGHT : int = 32
+    COLLEZIONABILI_WIDTH : int = 32
+    COLLEZIONABILI_HEIGHT : int = 32
     
 
     def __init__(self, width, height, title, ):
@@ -168,7 +168,7 @@ class MyGame(arcade.Window):
         next_x = self.macchina1.center_x
 
         while abs(next_x - self.macchina1.center_x) < 100 :
-            next_x = ((MyGame.MONETA_WIDTH/2) + (self.macchina1.center_x + random.randint(100, (MyGame.SCREEN_WIDTH - MyGame.MONETA_WIDTH)))%(MyGame.SCREEN_WIDTH - MyGame.MONETA_WIDTH))
+            next_x = ((MyGame.COLLEZIONABILI_HEIGHT/2) + (self.macchina1.center_x + random.randint(100, (MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)))%(MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)) + self.macchina1.center_x + 1000
 
         next_y: int = 330          
         
@@ -244,23 +244,27 @@ class MyGame(arcade.Window):
         if self.right_pressed:
             change_x += self.velocita
 
-        # Gestione collisioni
-        collisioni = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)        
-        if len(collisioni) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
-            if collisioni[0].tipo == "oro":
+        # Gestione collisioni tra macchina e collezionabili
+        collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)        
+        if len(collisioni_macchina_collezzionabili) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
+            if collisioni_macchina_collezzionabili[0].tipo == "oro":
                 self.conta_monete_prese += 1
                 self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
-                collisioni[0].remove_from_sprite_lists()
+                collisioni_macchina_collezzionabili[0].remove_from_sprite_lists()
                 self.crea_monete(tipo = "oro")
                 #print("moneta presa! Punteggio:", self.conta_monete_prese)
-
-            elif collisioni[0].tipo == "diamante":
+            elif collisioni_macchina_collezzionabili[0].tipo == "diamante":
                 self.conta_diamanti_presi += 1
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
-                collisioni[0].remove_from_sprite_lists()
+                collisioni_macchina_collezzionabili[0].remove_from_sprite_lists()
                 self.crea_monete(tipo = "diamante")
                 #print("Diamante preso! Punteggio:", self.conta_diamanti_presi)
-        
+        # Gestione collisioni tra collezionabili
+        # collisioni_collezionabili = arcade.check_for_collision_with_lists(self.moneta_list(tipo = "oro"), self.moneta_list(tipo = "diamante"))
+        # if len(collisioni_collezionabili) > 0 :
+        #     if collisioni_collezionabili[0]:
+        #         collisioni_collezionabili[0].remove_from_sprite_lists()
+                
         # Applica movimento
         self.macchina1.center_x += change_x
         self.macchina1.center_y += change_y
