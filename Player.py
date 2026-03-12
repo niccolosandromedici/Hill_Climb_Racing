@@ -1,5 +1,6 @@
 import arcade
 from Muri import Muri_
+from GameOver import GameOver_
 
 class Macchina(arcade.Sprite):
     def __init__(self):
@@ -97,7 +98,7 @@ class Macchina1(Macchina):
 
         if self.up_pressed:
             if self.macchina1.angle > 180 or self.macchina1.angle < -180:
-                return print("morto")
+                return 
             else:
                 self.change_angle -= self.velocita_angle
         if self.down_pressed:
