@@ -83,7 +83,13 @@ class Macchina1(Macchina):
     def on_update(self, delta_time):
 
         #movimento camera
-        self.camera.position = self.macchina1.position
+        cam_x, cam_y = self.camera.position
+        target_x = self.macchina1.center_x
+        target_y = self.macchina1.center_y
+        nuovo_x = cam_x + (target_x - cam_x) * 1
+        nuovo_y = cam_y + (target_y - cam_y) * 1
+        self.camera.position = (nuovo_x, nuovo_y)
+
 
         self.change_x : int | float = 0
         self.change_y : int | float = 0
@@ -141,7 +147,12 @@ class Macchina2(Macchina):
 
     def on_update(self, delta_time):
         #movimento camera
-        self.camera.position = self.macchina2.position
+        cam_x, cam_y = self.camera.position
+        target_x = self.macchina2.center_x
+        target_y = self.macchina2.center_y
+        nuovo_x = cam_x + (target_x - cam_x) * 1
+        nuovo_y = cam_y + (target_y - cam_y) * 1
+        self.camera.position = (nuovo_x, nuovo_y)
 
         self.change_x : int | float = 0
         self.change_y : int | float = 0
@@ -198,7 +209,12 @@ class Macchina3(Macchina):
 
     def on_update(self, delta_time):
         #movimento camera
-        self.camera.position = self.macchina3.position
+        cam_x, cam_y = self.camera.position
+        target_x = self.macchina3.center_x
+        target_y = self.macchina3.center_y
+        nuovo_x = cam_x + (target_x - cam_x) * 1
+        nuovo_y = cam_y + (target_y - cam_y) * 1
+        self.camera.position = (nuovo_x, nuovo_y)
 
         self.change_x : int | float = 0
         self.change_y : int | float = 0
