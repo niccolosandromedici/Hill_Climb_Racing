@@ -98,7 +98,7 @@ class Macchina1(Macchina):
 
         if self.up_pressed:
             if self.macchina1.angle > 180 or self.macchina1.angle < -180:
-                return 
+                return print("morto")
             else:
                 self.change_angle -= self.velocita_angle
         if self.down_pressed:

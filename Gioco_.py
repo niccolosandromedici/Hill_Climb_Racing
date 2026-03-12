@@ -52,29 +52,29 @@ class MyGame(arcade.Window):
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
-        # self.up_pressed : bool = False
-        # self.down_pressed : bool = False
-        # self.left_pressed : bool = False
-        # self.right_pressed : bool = False
+        self.up_pressed : bool = False
+        self.down_pressed : bool = False
+        self.left_pressed : bool = False
+        self.right_pressed : bool = False
 
-        # Player.Macchina1().__init__()
-        # Player.Macchina2().__init__()
-        # Player.Macchina3().__init__()
-        # Player.Macchina1().setup()
-        # Player.Macchina2().setup()
-        # Player.Macchina3().setup()
-        # Player.Macchina1().on_draw()
-        # Player.Macchina2().on_draw()
-        # Player.Macchina3().on_draw()
-        # Player.Macchina1().on_update(0)
-        # Player.Macchina2().on_update(0)
-        # Player.Macchina3().on_update(0)
-        # Player.Macchina1().on_key_press(0, 0)
-        # Player.Macchina2().on_key_press(0, 0)
-        # Player.Macchina3().on_key_press(0, 0)
-        # Player.Macchina1().on_key_release(0, 0)
-        # Player.Macchina2().on_key_release(0, 0)
-        # Player.Macchina3().on_key_release(0, 0)
+        Player.Macchina1().__init__()
+        Player.Macchina2().__init__()
+        Player.Macchina3().__init__()
+        Player.Macchina1().setup()
+        Player.Macchina2().setup()
+        Player.Macchina3().setup()
+        Player.Macchina1().on_draw()
+        Player.Macchina2().on_draw()
+        Player.Macchina3().on_draw()
+        Player.Macchina1().on_update(0)
+        Player.Macchina2().on_update(0)
+        Player.Macchina3().on_update(0)
+        Player.Macchina1().on_key_press(0, 0)
+        Player.Macchina2().on_key_press(0, 0)
+        Player.Macchina3().on_key_press(0, 0)
+        Player.Macchina1().on_key_release(0, 0)
+        Player.Macchina2().on_key_release(0, 0)
+        Player.Macchina3().on_key_release(0, 0)
 
 
 
@@ -86,7 +86,7 @@ class MyGame(arcade.Window):
         # platforms parameter that is intended for moving platforms.
         # If a platform is supposed to move, and is added to the walls list,
         # it will not be moved.
-        #self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri.Muri_().wall_list, gravity_constant = self.gravity)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri.Muri_().wall_list, gravity_constant = self.gravity)
         #self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina2, walls = Muri_().wall_list, gravity_constant = self.gravity)
         #self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina3, walls = Muri_().wall_list, gravity_constant = self.gravity)
 
