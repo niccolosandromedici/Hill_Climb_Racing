@@ -1,6 +1,6 @@
 import arcade
 from Muri import Muri_
-from GameOver import GameOver_
+# from GameOver import GameOver_
 
 class Macchina(arcade.Sprite):
     def __init__(self):
