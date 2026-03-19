@@ -58,7 +58,6 @@ class Macchina(arcade.Sprite):
             #    arcade.stop_sound(self.suono_motore)
         
 
-
 class Macchina1(Macchina):
     def __init__(self):
         super().__init__(Macchina)
