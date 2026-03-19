@@ -2,7 +2,8 @@ import arcade
 import os
 import random
 import Muri
-import Player
+import parallasse
+#import Player
 
 
 
@@ -14,18 +15,18 @@ import Player
 #https://api.arcade.academy/en/3.3.3/example_code/background_parallax.html
 #sito per errore di parallasse
 
-
-class MyGame(arcade.Window):
-    SCREEN_WIDTH : int = 900
-    SCREEN_HEIGHT : int = 600
-    COLLEZIONABILI_WIDTH : int = 32
-    COLLEZIONABILI_HEIGHT : int = 32
+SCREEN_WIDTH : int = 900
+SCREEN_HEIGHT : int = 600
+COLLEZIONABILI_WIDTH : int = 32
+COLLEZIONABILI_HEIGHT : int = 32
     
+class MyGame(arcade.Window):
+   
 
     def __init__(self, width, height, title):
 
         super().__init__(width, height, title)
-
+        self.parallasse = parallasse.parallax()
         self.macchina_list = arcade.SpriteList()
         self.moneta_list = arcade.SpriteList()
         
@@ -48,7 +49,7 @@ class MyGame(arcade.Window):
         self.testo_score_diamanti : str | bool = None
 
         self.setup()
-
+        self.parallasse.pan_camera_to_player()
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
@@ -58,23 +59,12 @@ class MyGame(arcade.Window):
         self.right_pressed : bool = False
 
         # Player.Macchina1().__init__()
-        # Player.Macchina2().__init__()
-        # Player.Macchina3().__init__()
         # Player.Macchina1().setup()
-        # Player.Macchina2().setup()
-        # Player.Macchina3().setup()
         # Player.Macchina1().on_draw()
-        # Player.Macchina2().on_draw()
-        # Player.Macchina3().on_draw()
         # Player.Macchina1().on_update(0)
-        # Player.Macchina2().on_update(0)
-        # Player.Macchina3().on_update(0)
         # Player.Macchina1().on_key_press(0, 0)
-        # Player.Macchina2().on_key_press(0, 0)
-        # Player.Macchina3().on_key_press(0, 0)
         # Player.Macchina1().on_key_release(0, 0)
-        # Player.Macchina2().on_key_release(0, 0)
-        # Player.Macchina3().on_key_release(0, 0)
+        
 
 
 
@@ -87,9 +77,7 @@ class MyGame(arcade.Window):
         # If a platform is supposed to move, and is added to the walls list,
         # it will not be moved.
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri.Muri_().wall_list, gravity_constant = self.gravity)
-        #self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina2, walls = Muri_().wall_list, gravity_constant = self.gravity)
-        #self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina3, walls = Muri_().wall_list, gravity_constant = self.gravity)
-
+        
         
         
 
@@ -111,9 +99,7 @@ class MyGame(arcade.Window):
         
 
         #carica sfondo
-        self.background = arcade.load_texture("immagini/Sfondo.jpg")
         
-
         #scrivi testo punteggio delle monete
         self.testo_score_monete = arcade.Text( #testo del punteggio
             text="Monete: " + str(self.conta_monete_prese),
@@ -139,7 +125,7 @@ class MyGame(arcade.Window):
 
     def crea_macchina(self, tipo):
         if tipo == "macchina1":
-            self.macchina1 = arcade.Sprite("./immagini/78614.png")
+            self.macchina1 = self.parallasse.player
             self.macchina1.center_x : int = 100
             self.macchina1.center_y : int = 250
             self.macchina1.scale_x : int = 1
@@ -147,24 +133,7 @@ class MyGame(arcade.Window):
             self.macchina1.angle : int = 0
             self.velocita : int | float = 5
             self.macchina_list.append(self.macchina1)
-        elif tipo == "macchina2":
-             self.macchina2 = arcade.Sprite("./immagini/Car_blue.png")
-             self.macchina2.center_x : int = 100
-             self.macchina2.center_y : int = 250
-             self.macchina2.scale_x : int = 1
-             self.macchina2.scale_y : int = 1
-             self.macchina2.angle : int = 0
-             self.velocita : int | float = 7
-             self.macchina_list.append(self.macchina2)
-        elif tipo == "macchina3":
-             self.macchina3 = arcade.Sprite("./immagini/Car_red.png")
-             self.macchina3.center_x : int = 100
-             self.macchina3.center_y : int = 250
-             self.macchina3.scale_x : int = 1
-             self.macchina3.scale_y : int = 1
-             self.macchina3.angle : int = 0
-             self.velocita : int | float = 9
-             self.macchina_list.append(self.macchina3)
+        
 
 
     
@@ -176,7 +145,7 @@ class MyGame(arcade.Window):
         next_x = self.macchina1.center_x
 
         while abs(next_x - self.macchina1.center_x) < 100 :
-            next_x = ((MyGame.COLLEZIONABILI_HEIGHT/2) + (self.macchina1.center_x + random.randint(100, (MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)))%(MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)) + self.macchina1.center_x + 1000
+            next_x = ((COLLEZIONABILI_HEIGHT/2) + (self.macchina1.center_x + random.randint(100, (SCREEN_WIDTH - COLLEZIONABILI_WIDTH)))%(SCREEN_WIDTH - COLLEZIONABILI_WIDTH)) + self.macchina1.center_x + 1000
 
         next_y: int = 330          
         
@@ -214,31 +183,31 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         self.clear()
+        self.parallasse.camera.use()
+        #arcade.draw_texture_rect(self.background, arcade.types.Viewport( self.camera.position[0] - SCREEN_WIDTH/2, self.camera.position[1] - SCREEN_HEIGHT/3.2, SCREEN_WIDTH + 100, SCREEN_HEIGHT + 100) )
+        
+        bg = self.parallasse.backgrounds
 
-        arcade.draw_texture_rect(self.background, arcade.types.Viewport( self.camera.position[0] - MyGame.SCREEN_WIDTH/2, self.camera.position[1] - MyGame.SCREEN_HEIGHT/3.2, MyGame.SCREEN_WIDTH + 100, MyGame.SCREEN_HEIGHT + 100) )
+        # Sposta i layer simulando la profondità
+        bg.offset = self.camera.bottom_left
+        # Segue la camera per simulare un "mondo infinito"
+        bg.pos = self.camera.bottom_left
 
-        self.macchina_list.draw()
+        bg.draw()
+        arcade.draw_sprite(self.macchina1)
         self.moneta_list.draw()
 
         
         Muri.Muri_().draw()
-        self.camera.use()
         self.testo_score_monete.draw()
         self.testo_score_diamanti.draw()
 
 
 
-    def on_update(self, deltaTime):
-        
+    def on_update(self, delta_time):
+        self.parallasse.on_update(delta_time)
         self.physics_engine.update()
         
-        #movimento camera
-        self.camera.position = self.macchina1.position
-        #self.camera.position = self.macchina2.position
-        #self.camera.position = self.macchina3.position
-
-        
-
         # Calcola movimento in base ai tasti premuti
         change_x : int | float = 0
         change_y : int | float = 0
@@ -304,9 +273,7 @@ class MyGame(arcade.Window):
             self.right_pressed = True
             #if not self.suono_motore.is_playing:
             #    arcade.play_sound(self.suono_motore)
-        #elif key == arcade.key.SPACE:  
-        #    if self.physics_engine.can_jump():
-        #        self.macchina1.change_y = self.jump_speed
+        
                 
 
 
@@ -338,7 +305,7 @@ class MyGame(arcade.Window):
 
 def main():
     game = MyGame(
-        MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT, "Hill Climb Racing"
+        SCREEN_WIDTH, SCREEN_HEIGHT, "Hill Climb Racing"
     )
     arcade.run()
 
