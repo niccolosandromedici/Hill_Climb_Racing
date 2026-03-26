@@ -20,9 +20,9 @@ class parallax(arcade.View):
 
         # Aggiungiamo i layer dal più lontano al più vicino.
         # depth alto = lontano = scorre lento
-        self.backgrounds.add_from_file("./immagini/Sfondo_cielo.jpg",    size=bg_size, depth=10.0)
+        self.backgrounds.add_from_file("./immagini/Sfondo_cielo.jpg",    size=bg_size, depth=5.0)
         
-        self.backgrounds.add_from_file("./immagini/Sfondo_STRADA.png",   size=(SCREEN_WIDTH, 67), depth=3.0)
+        self.backgrounds.add_from_file("./immagini/Sfondo_STRADA.png",   size=(SCREEN_WIDTH, 67), depth=2.0)
         
 
         self.player = arcade.Sprite("./immagini/78614.png")

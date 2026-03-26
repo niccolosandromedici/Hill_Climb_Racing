@@ -2,8 +2,8 @@ import arcade
 import os
 import random
 import Muri
-import parallasse
-#import Player
+#import parallasse
+import Player
 
 
 
@@ -26,7 +26,7 @@ class MyGame(arcade.Window):
     def __init__(self, width, height, title):
 
         super().__init__(width, height, title)
-        self.parallasse = parallasse.parallax()
+        #self.parallasse = parallasse.parallax()
         self.macchina_list = arcade.SpriteList()
         self.moneta_list = arcade.SpriteList()
         
@@ -34,12 +34,12 @@ class MyGame(arcade.Window):
         self.suono_motore = arcade.load_sound("./immagini/audio_motore.mp3")
         
         # #fisica
-        self.gravity : int | float = 1
+        #self.gravity : int | float = 1
         # #self.jump_speed : int | float = 20
 
         # #movimento
-        self.velocita : int | float | bool = None
-        self.velocita_angle : int| float = 1
+        #self.velocita : int | float | bool = None
+        #self.velocita_angle : int| float = 1
         
         #conta monete e diamanti
         self.conta_monete_prese : int = 0
@@ -49,21 +49,19 @@ class MyGame(arcade.Window):
         self.testo_score_diamanti : str | bool = None
 
         self.setup()
-        self.parallasse.pan_camera_to_player()
+        #self.parallasse.pan_camera_to_player()
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
-        self.up_pressed : bool = False
-        self.down_pressed : bool = False
-        self.left_pressed : bool = False
-        self.right_pressed : bool = False
+        Player.Macchina().up_pressed : bool = False
+        Player.Macchina().down_pressed : bool = False
+        Player.Macchina().left_pressed : bool = False
+        Player.Macchina().right_pressed : bool = False
 
-        # Player.Macchina1().__init__()
-        # Player.Macchina1().setup()
-        # Player.Macchina1().on_draw()
-        # Player.Macchina1().on_update(0)
-        # Player.Macchina1().on_key_press(0, 0)
-        # Player.Macchina1().on_key_release(0, 0)
+        Player.Macchina1().__init__()
+        
+        
+        
         
 
 
@@ -76,7 +74,7 @@ class MyGame(arcade.Window):
         # platforms parameter that is intended for moving platforms.
         # If a platform is supposed to move, and is added to the walls list,
         # it will not be moved.
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri.Muri_().wall_list, gravity_constant = self.gravity)
+        #self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri.Muri_().wall_list, gravity_constant = self.gravity)
         
         
         
@@ -86,7 +84,9 @@ class MyGame(arcade.Window):
 
 
         #crea macchina
-        self.crea_macchina(tipo = "macchina1")
+        #self.crea_macchina(tipo = "macchina1")
+
+        Player.Macchina1().setup()
 
 
         #crea monete iniziali
@@ -95,16 +95,17 @@ class MyGame(arcade.Window):
         self.crea_monete(tipo = "diamante")
 
         # Set up the camera
-        self.camera = arcade.Camera2D()
+        #self.camera = arcade.Camera2D()
         
 
         #carica sfondo
+        self.background = arcade.load_texture("./immagini/Sfondo_STRADA.png")
         
         #scrivi testo punteggio delle monete
         self.testo_score_monete = arcade.Text( #testo del punteggio
             text="Monete: " + str(self.conta_monete_prese),
-            x = self.macchina1.center_x,
-            y = self.macchina1.center_y + 350,
+            x = Player.Macchina1().center_x,
+            y = Player.Macchina1().center_y + 250,
             color = arcade.color.BLACK,
             font_size = 24,
             font_name = "Arial", # O il nome del tuo font caricato
@@ -114,8 +115,8 @@ class MyGame(arcade.Window):
         #scrivi testo punteggio dei diamanti
         self.testo_score_diamanti = arcade.Text( #testo del punteggio
             text="Diamanti: " + str(self.conta_diamanti_presi),
-            x = self.macchina1.center_x,
-            y = self.macchina1.center_y + 300, 
+            x = Player.Macchina1().center_x,
+            y = Player.Macchina1().center_y + 300, 
             color = arcade.color.BLACK,
             font_size = 24,
             font_name = "Arial", # O il nome del tuo font caricato
@@ -123,16 +124,16 @@ class MyGame(arcade.Window):
         )
 
 
-    def crea_macchina(self, tipo):
-        if tipo == "macchina1":
-            self.macchina1 = self.parallasse.player
-            self.macchina1.center_x : int = 100
-            self.macchina1.center_y : int = 250
-            self.macchina1.scale_x : int = 1
-            self.macchina1.scale_y : int = 1
-            self.macchina1.angle : int = 0
-            self.velocita : int | float = 5
-            self.macchina_list.append(self.macchina1)
+    #def crea_macchina(self, tipo):
+        # if tipo == "macchina1":
+        #     self.macchina1 = arcade.Sprite("./immagini/78614.png")
+        #     self.macchina1.center_x : int = 100
+        #     self.macchina1.center_y : int = 250
+        #     self.macchina1.scale_x : int = 1
+        #     self.macchina1.scale_y : int = 1
+        #     self.macchina1.angle : int = 0
+        #     self.velocita : int | float = 5
+        #     self.macchina_list.append(self.macchina1)
         
 
 
@@ -142,10 +143,10 @@ class MyGame(arcade.Window):
         #print("[" + str(self.conta_monete_prese) + "] == > Creazione monete...")
 
 
-        next_x = self.macchina1.center_x
+        next_x = Player.Macchina1().center_x
 
-        while abs(next_x - self.macchina1.center_x) < 100 :
-            next_x = ((COLLEZIONABILI_HEIGHT/2) + (self.macchina1.center_x + random.randint(100, (SCREEN_WIDTH - COLLEZIONABILI_WIDTH)))%(SCREEN_WIDTH - COLLEZIONABILI_WIDTH)) + self.macchina1.center_x + 1000
+        while abs(next_x - Player.Macchina1().center_x) < 100 :
+            next_x = ((COLLEZIONABILI_HEIGHT/2) + (Player.Macchina1().center_x + random.randint(100, (SCREEN_WIDTH - COLLEZIONABILI_WIDTH)))%(SCREEN_WIDTH - COLLEZIONABILI_WIDTH)) + Player.Macchina1().center_x + 1000
 
         next_y: int = 330          
         
@@ -183,20 +184,21 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         self.clear()
-        self.parallasse.camera.use()
-        #arcade.draw_texture_rect(self.background, arcade.types.Viewport( self.camera.position[0] - SCREEN_WIDTH/2, self.camera.position[1] - SCREEN_HEIGHT/3.2, SCREEN_WIDTH + 100, SCREEN_HEIGHT + 100) )
+        #self.parallasse.camera.use()
+        arcade.draw_texture_rect(self.background, arcade.types.Viewport( Player.Macchina1().camera.position[0] - SCREEN_WIDTH/2, Player.Macchina1().camera.position[1] - SCREEN_HEIGHT/3.2, SCREEN_WIDTH + 100, SCREEN_HEIGHT + 100) )
         
-        bg = self.parallasse.backgrounds
+        #bg = self.parallasse.backgrounds
 
         # Sposta i layer simulando la profondità
-        bg.offset = self.camera.bottom_left
+        #bg.offset = self.camera.bottom_left
         # Segue la camera per simulare un "mondo infinito"
-        bg.pos = self.camera.bottom_left
+        #bg.pos = self.camera.bottom_left
 
-        bg.draw()
-        arcade.draw_sprite(self.macchina1)
+        #bg.draw()
+        #arcade.draw_sprite(self.macchina1)
         self.moneta_list.draw()
 
+        Player.Macchina1().on_draw()
         
         Muri.Muri_().draw()
         self.testo_score_monete.draw()
@@ -205,31 +207,34 @@ class MyGame(arcade.Window):
 
 
     def on_update(self, delta_time):
-        self.parallasse.on_update(delta_time)
-        self.physics_engine.update()
+        #self.parallasse.on_update(delta_time)
+        #self.physics_engine.update()
+
+        Player.Macchina1().on_update(delta_time)
+    
         
         # Calcola movimento in base ai tasti premuti
-        change_x : int | float = 0
-        change_y : int | float = 0
-        change_angle : int | float = 0
+        Player.Macchina1().change_x : int | float = 0
+        Player.Macchina1().change_y : int | float = 0
+        Player.Macchina1().change_angle : int | float = 0
         
-        if self.up_pressed:
-            if self.macchina1.angle > 180 or self.macchina1.angle < -180:
+        if Player.Macchina().up_pressed:
+            if Player.Macchina1().macchina1.angle > 180 or Player.Macchina1().macchina1.angle < -180:
                 return print("morto")
             else:
-                change_angle -= self.velocita_angle
-        if self.down_pressed:
-            if self.macchina1.angle > 180 or self.macchina1.angle < -180:
+                Player.Macchina1().change_angle -= Player.Macchina1().macchina1_velocita_angle
+        if Player.Macchina().down_pressed:
+            if Player.Macchina1().macchina1.angle > 180 or Player.Macchina1().macchina1.angle < -180:
                 return print("morto")
             else:
-                change_angle += self.velocita_angle
-        if self.left_pressed:
-            change_x -= self.velocita
-        if self.right_pressed:
-            change_x += self.velocita
+                Player.Macchina1().change_angle += Player.Macchina1().macchina1_velocita_angle
+        if Player.Macchina().left_pressed:
+            Player.Macchina1().change_x -= Player.Macchina1().macchina1_velocita
+        if Player.Macchina().right_pressed:
+            Player.Macchina1().change_x += Player.Macchina1().macchina1_velocita
         
         # Gestione collisioni tra macchina e collezionabili
-        collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)        
+        collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(Player.Macchina1().macchina1, self.moneta_list)        
         if len(collisioni_macchina_collezzionabili) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
             if collisioni_macchina_collezzionabili[0].tipo == "oro":
                 self.conta_monete_prese += 1
@@ -247,13 +252,13 @@ class MyGame(arcade.Window):
 
 
         # Applica movimento
-        self.macchina1.center_x += change_x
-        self.macchina1.center_y += change_y
-        self.macchina1.angle += change_angle
+        Player.Macchina1().center_x += Player.Macchina1().change_x
+        Player.Macchina1().center_y += Player.Macchina1().change_y
+        Player.Macchina1().angle += Player.Macchina1().change_angle
 
         #aggiornamento x delle scritte
-        self.testo_score_monete.x += change_x
-        self.testo_score_diamanti.x += change_x
+        self.testo_score_monete.x += Player.Macchina1().change_x
+        self.testo_score_diamanti.x += Player.Macchina1().change_x
        
 
        
@@ -262,17 +267,23 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.W or key == arcade.key.UP:
-            self.up_pressed = True
+            Player.Macchina().up_pressed = True
+            print("sù")
         elif key == arcade.key.S or key == arcade.key.DOWN:
-            self.down_pressed = True
+            Player.Macchina().down_pressed = True
+            print("giù")
         elif key == arcade.key.A or key == arcade.key.LEFT:
-            self.left_pressed = True
+            Player.Macchina().left_pressed = True
+            print("indietro")
             #if not self.suono_motore.is_playing:
             #    arcade.play_sound(self.suono_motore)
         elif key == arcade.key.D or key == arcade.key.RIGHT:
-            self.right_pressed = True
+            Player.Macchina().right_pressed = True
+            print("avanti")
             #if not self.suono_motore.is_playing:
             #    arcade.play_sound(self.suono_motore)
+
+        
         
                 
 
@@ -281,20 +292,19 @@ class MyGame(arcade.Window):
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.W or key == arcade.key.UP:
-            self.up_pressed = False
+            Player.Macchina().up_pressed = False
         elif key == arcade.key.S or key == arcade.key.DOWN:
-            self.down_pressed = False
+            Player.Macchina().down_pressed = False
         elif key == arcade.key.A or key == arcade.key.LEFT:
-            self.left_pressed = False
+            Player.Macchina().left_pressed = False
             #if self.suono_motore.is_playing:
             #    arcade.stop_sound(self.suono_motore)
         elif key == arcade.key.D or key == arcade.key.RIGHT:
-            self.right_pressed = False
+            Player.Macchina().right_pressed = False
             #if self.suono_motore.is_playing:
             #    arcade.stop_sound(self.suono_motore)
-            
 
-    
+       
 
 
 
