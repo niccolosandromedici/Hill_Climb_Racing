@@ -84,8 +84,6 @@ class MyGame(arcade.Window):
 
 
         #crea macchina
-        #self.crea_macchina(tipo = "macchina1")
-
         Player.Macchina1().setup()
 
 
@@ -124,16 +122,7 @@ class MyGame(arcade.Window):
         )
 
 
-    #def crea_macchina(self, tipo):
-        # if tipo == "macchina1":
-        #     self.macchina1 = arcade.Sprite("./immagini/78614.png")
-        #     self.macchina1.center_x : int = 100
-        #     self.macchina1.center_y : int = 250
-        #     self.macchina1.scale_x : int = 1
-        #     self.macchina1.scale_y : int = 1
-        #     self.macchina1.angle : int = 0
-        #     self.velocita : int | float = 5
-        #     self.macchina_list.append(self.macchina1)
+   
         
 
 

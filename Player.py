@@ -62,7 +62,7 @@ class Macchina1(Macchina):
         super().__init__()
         self.macchina1 = arcade.Sprite("./immagini/78614.png")
         self.macchina1.center_x : int = 100
-        self.macchina1.center_y : int = 250
+        self.macchina1.center_y : int = 350
         self.macchina1.scale_x : int = 1
         self.macchina1.scale_y : int = 1
         self.macchina1.angle : int = 0
@@ -70,7 +70,7 @@ class Macchina1(Macchina):
         self.macchina1_velocita_angle : int | float = 1
         self.macchina_list.append(self.macchina1)
 
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri_().wall_list, gravity_constant = self.gravity)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri_().wall_list, gravity_constant = Macchina().gravity)
     
 
 
@@ -121,7 +121,7 @@ class Macchina2(Macchina):
         super().__init__(Macchina)
         self.macchina2 = arcade.Sprite("./immagini/Car_blue.png")
         self.macchina2.center_x : int = 100
-        self.macchina2.center_y : int = 250
+        self.macchina2.center_y : int = 350
         self.macchina2.scale_x : int = 1
         self.macchina2.scale_y : int = 1
         self.macchina2.angle : int = 0
@@ -129,7 +129,7 @@ class Macchina2(Macchina):
         self.macchina2_velocita_angle : int | float = 2
         self.macchina_list.append(self.macchina2)
 
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina2, walls = Muri_().wall_list, gravity_constant = self.gravity)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina2, walls = Muri_().wall_list, gravity_constant = Macchina().gravity)
     
     def setup(self):
         return super().setup()
@@ -174,7 +174,7 @@ class Macchina3(Macchina):
         super().__init__(Macchina)
         self.macchina3 = arcade.Sprite("./immagini/Car_red.png")
         self.macchina3.center_x : int = 100
-        self.macchina3.center_y : int = 250
+        self.macchina3.center_y : int = 350
         self.macchina3.scale_x : int = 1
         self.macchina3.scale_y : int = 1
         self.macchina3.angle : int = 0
@@ -182,7 +182,7 @@ class Macchina3(Macchina):
         self.macchina3_velocita_angle : int | float = 3
         self.macchina_list.append(self.macchina3)
 
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina3, walls = Muri_().wall_list, gravity_constant = self.gravity)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina3, walls = Muri_().wall_list, gravity_constant = Macchina().gravity)
 
     def setup(self):
         return super().setup()
