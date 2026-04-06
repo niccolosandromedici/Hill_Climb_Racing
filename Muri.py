@@ -1,4 +1,6 @@
 import arcade
+import Player
+import Gioco_
 
 
 class Muri_(arcade.Sprite):
@@ -18,7 +20,7 @@ class Muri_(arcade.Sprite):
 
         # Create the ground
         # This shows using a loop to place multiple sprites horizontally
-        for x in range(-350, 100, 64):
+        for x in range(-350, 1000, 64):
             ground = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
             ground.center_x = x
             ground.center_y = 250
