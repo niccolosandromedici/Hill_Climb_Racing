@@ -27,14 +27,14 @@ class MyGame(arcade.Window):
 
         super().__init__(width, height, title)
         #self.parallasse = parallasse.parallax()
-        self.macchina_list = arcade.SpriteList()
+        #self.macchina_list = arcade.SpriteList()
         self.moneta_list = arcade.SpriteList()
         
         #suono
         self.suono_motore = arcade.load_sound("./immagini/audio_motore.mp3")
         
         # #fisica
-        #self.gravity : int | float = 1
+        self.gravity : int | float = 1
         # #self.jump_speed : int | float = 20
 
         # #movimento
@@ -53,19 +53,14 @@ class MyGame(arcade.Window):
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
-        Player.Macchina().up_pressed : bool = False
-        Player.Macchina().down_pressed : bool = False
-        Player.Macchina().left_pressed : bool = False
-        Player.Macchina().right_pressed : bool = False
+        Player.Macchina1().up_pressed : bool = False
+        Player.Macchina1().down_pressed : bool = False
+        Player.Macchina1().left_pressed : bool = False
+        Player.Macchina1().right_pressed : bool = False
 
         Player.Macchina1().__init__()
         
         
-        
-        
-
-
-
 
         # Create a Platformer Physics Engine.
         # This will handle moving our player as well as collisions between
@@ -74,7 +69,7 @@ class MyGame(arcade.Window):
         # platforms parameter that is intended for moving platforms.
         # If a platform is supposed to move, and is added to the walls list,
         # it will not be moved.
-        #self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri.Muri_().wall_list, gravity_constant = self.gravity)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(Player.Macchina1().macchina1, walls = Muri.Muri_().wall_list, gravity_constant = self.gravity)
         
         
         
@@ -93,7 +88,7 @@ class MyGame(arcade.Window):
         self.crea_monete(tipo = "diamante")
 
         # Set up the camera
-        #self.camera = arcade.Camera2D()
+        self.camera = arcade.Camera2D()
         
 
         #carica sfondo
@@ -173,8 +168,9 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         self.clear()
+        self.camera.use()
         #self.parallasse.camera.use()
-        arcade.draw_texture_rect(self.background, arcade.types.Viewport( Player.Macchina1().camera.position[0] - SCREEN_WIDTH/2, Player.Macchina1().camera.position[1] - SCREEN_HEIGHT/3.2, SCREEN_WIDTH + 100, SCREEN_HEIGHT + 100) )
+        arcade.draw_texture_rect(self.background, arcade.types.Viewport( self.camera.position[0] - SCREEN_WIDTH/2, self.camera.position[1] - SCREEN_HEIGHT/3.2, SCREEN_WIDTH + 100, SCREEN_HEIGHT + 100) )
         
         #bg = self.parallasse.backgrounds
 
@@ -196,31 +192,33 @@ class MyGame(arcade.Window):
 
 
     def on_update(self, delta_time):
+
+        self.camera.position = Player.Macchina1().macchina1.position
         #self.parallasse.on_update(delta_time)
-        #self.physics_engine.update()
+        self.physics_engine.update()
 
         Player.Macchina1().on_update(delta_time)
     
         
-        # Calcola movimento in base ai tasti premuti
-        Player.Macchina1().change_x : int | float = 0
-        Player.Macchina1().change_y : int | float = 0
-        Player.Macchina1().change_angle : int | float = 0
+        # # Calcola movimento in base ai tasti premuti
+        # Player.Macchina1().change_x : int | float = 0
+        # Player.Macchina1().change_y : int | float = 0
+        # Player.Macchina1().change_angle : int | float = 0
         
-        if Player.Macchina().up_pressed:
-            if Player.Macchina1().macchina1.angle > 180 or Player.Macchina1().macchina1.angle < -180:
-                return print("morto")
-            else:
-                Player.Macchina1().change_angle -= Player.Macchina1().macchina1_velocita_angle
-        if Player.Macchina().down_pressed:
-            if Player.Macchina1().macchina1.angle > 180 or Player.Macchina1().macchina1.angle < -180:
-                return print("morto")
-            else:
-                Player.Macchina1().change_angle += Player.Macchina1().macchina1_velocita_angle
-        if Player.Macchina().left_pressed:
-            Player.Macchina1().change_x -= Player.Macchina1().macchina1_velocita
-        if Player.Macchina().right_pressed:
-            Player.Macchina1().change_x += Player.Macchina1().macchina1_velocita
+        # if Player.Macchina().up_pressed:
+        #     if Player.Macchina1().macchina1.angle > 180 or Player.Macchina1().macchina1.angle < -180:
+        #         return print("morto")
+        #     else:
+        #         Player.Macchina1().change_angle -= Player.Macchina1().macchina1_velocita_angle
+        # if Player.Macchina().down_pressed:
+        #     if Player.Macchina1().macchina1.angle > 180 or Player.Macchina1().macchina1.angle < -180:
+        #         return print("morto")
+        #     else:
+        #         Player.Macchina1().change_angle += Player.Macchina1().macchina1_velocita_angle
+        # if Player.Macchina().left_pressed:
+        #     Player.Macchina1().change_x -= Player.Macchina1().macchina1_velocita
+        # if Player.Macchina().right_pressed:
+        #     Player.Macchina1().change_x += Player.Macchina1().macchina1_velocita
         
         # Gestione collisioni tra macchina e collezionabili
         collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(Player.Macchina1().macchina1, self.moneta_list)        
@@ -240,10 +238,10 @@ class MyGame(arcade.Window):
 
 
 
-        # Applica movimento
-        Player.Macchina1().center_x += Player.Macchina1().change_x
-        Player.Macchina1().center_y += Player.Macchina1().change_y
-        Player.Macchina1().angle += Player.Macchina1().change_angle
+        # # Applica movimento
+        # Player.Macchina1().center_x += Player.Macchina1().change_x
+        # Player.Macchina1().center_y += Player.Macchina1().change_y
+        # Player.Macchina1().angle += Player.Macchina1().change_angle
 
         #aggiornamento x delle scritte
         self.testo_score_monete.x += Player.Macchina1().change_x
@@ -254,47 +252,35 @@ class MyGame(arcade.Window):
 
 
 
-    def on_key_press(self, key, modifiers):
-        if key == arcade.key.W or key == arcade.key.UP:
-            Player.Macchina().up_pressed = True
-            print("sù")
-        elif key == arcade.key.S or key == arcade.key.DOWN:
-            Player.Macchina().down_pressed = True
-            print("giù")
-        elif key == arcade.key.A or key == arcade.key.LEFT:
-            Player.Macchina().left_pressed = True
-            print("indietro")
-            #if not self.suono_motore.is_playing:
-            #    arcade.play_sound(self.suono_motore)
-        elif key == arcade.key.D or key == arcade.key.RIGHT:
-            Player.Macchina().right_pressed = True
-            print("avanti")
-            #if not self.suono_motore.is_playing:
-            #    arcade.play_sound(self.suono_motore)
+    # def on_key_press(self, key, modifiers):
+    #     if key == arcade.key.W or key == arcade.key.UP:
+    #         Player.Macchina().up_pressed = True
+    #         print("sù")
+    #     elif key == arcade.key.S or key == arcade.key.DOWN:
+    #         Player.Macchina().down_pressed = True
+    #         print("giù")
+    #     elif key == arcade.key.A or key == arcade.key.LEFT:
+    #         Player.Macchina().left_pressed = True
+    #         print("indietro")
+    #     elif key == arcade.key.D or key == arcade.key.RIGHT:
+    #         Player.Macchina().right_pressed = True
+    #         print("avanti")
+            
 
         
-        
-                
-
-
-
-
-    def on_key_release(self, key, modifiers):
-        if key == arcade.key.W or key == arcade.key.UP:
-            Player.Macchina().up_pressed = False
-        elif key == arcade.key.S or key == arcade.key.DOWN:
-            Player.Macchina().down_pressed = False
-        elif key == arcade.key.A or key == arcade.key.LEFT:
-            Player.Macchina().left_pressed = False
-            #if self.suono_motore.is_playing:
-            #    arcade.stop_sound(self.suono_motore)
-        elif key == arcade.key.D or key == arcade.key.RIGHT:
-            Player.Macchina().right_pressed = False
-            #if self.suono_motore.is_playing:
-            #    arcade.stop_sound(self.suono_motore)
-
-       
-
+    # def on_key_release(self, key, modifiers):
+    #     if key == arcade.key.W or key == arcade.key.UP:
+    #         Player.Macchina().up_pressed = False
+    #         print("non sù")
+    #     elif key == arcade.key.S or key == arcade.key.DOWN:
+    #         Player.Macchina().down_pressed = False
+    #         print("non giù")
+    #     elif key == arcade.key.A or key == arcade.key.LEFT:
+    #         Player.Macchina().left_pressed = False
+    #         print("non indietro")
+    #     elif key == arcade.key.D or key == arcade.key.RIGHT:
+    #         Player.Macchina().right_pressed = False
+    #         print("non avanti")
 
 
     def aggiorna_punteggio(self, nuovo_punteggio):
