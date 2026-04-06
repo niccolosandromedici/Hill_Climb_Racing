@@ -4,6 +4,7 @@ import random
 from Muri import Muri_
 from GameOver import GameOver_
 from win_screen import WinScreen_
+from Pausa import PauseView
 
 #https://api.arcade.academy/en/stable/tutorials/platform_tutorial/step_07.html
 #sito con tutta la documentazione necessaria per il mio gioco
@@ -55,10 +56,12 @@ class MyGame(arcade.Window):
         self.left_pressed : bool = False
         self.right_pressed : bool = False
 
+        self.pausa = False
         self.vincitore = False
         self.morto = False
         self.game_over = GameOver_()
         self.win_screen = WinScreen_()
+        self.wait = PauseView(self)
 
 
 
@@ -126,7 +129,7 @@ class MyGame(arcade.Window):
         self.macchina1.scale_x : int = 1
         self.macchina1.scale_y : int = 1
         self.macchina1.angle : int = 0
-        self.velocita : int | float = 100
+        self.velocita : int | float = 5
         self.velocita_angle : int| float = 2.5
         self.macchina_list.append(self.macchina1)
        
@@ -198,6 +201,9 @@ class MyGame(arcade.Window):
         if self.vincitore == True:
             self.clear()
             self.win_screen.on_draw()
+        if self.pausa == True:
+            self.clear()
+            self.wait.on_draw()
 
         
 
@@ -315,6 +321,8 @@ class MyGame(arcade.Window):
                 self.conta_diamanti_presi = 0
                 self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
+        elif key == arcade.key.P:
+            self.pausa = True
         #elif key == arcade.key.SPACE:  
         #    if self.physics_engine.can_jump():
         #        self.macchina1.change_y = self.jump_speed
