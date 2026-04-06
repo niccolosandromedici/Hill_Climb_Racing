@@ -1,7 +1,7 @@
 import arcade
 
 
-class GameOver_:
+class GameOver_(arcade.View):
     def __init__(self):
         super().__init__()
 
