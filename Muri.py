@@ -1,4 +1,5 @@
 import arcade
+import noise
 
 
 
@@ -19,12 +20,13 @@ class Muri_(arcade.Sprite):
 
         # Create the ground
         # This shows using a loop to place multiple sprites horizontally
-        for x in range(-350, 10000, 64):
-            ground = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
-            ground.center_x = x
-            ground.center_y = 250
-            #ground.angle = random.randint(0, 180)
-            self.wall_list.append(ground)
+        
+        # for x in range(-350, 10000, 64):
+        #     ground = arcade.Sprite(":resources:images/tiles/grassMid.png", scale = self.tile_scaling)
+        #     ground.center_x = x
+        #     ground.center_y = 250
+        #     #ground.angle = random.randint(0, 180)
+        #     self.wall_list.append(ground)
         
 
         for y in range(200, 500, 64):
@@ -33,4 +35,8 @@ class Muri_(arcade.Sprite):
             start_wall.center_y = y
             self.wall_list.append(start_wall)  
 
-    
+    def on_draw(self):
+        arcade.start_render()
+        for x in range(10000):
+            y = int(500 / 2 + noise.pnoise1(x * 1) * 100)
+            arcade.draw_line(-350, 250, 10000, 250, arcade.color.GREEN, 1)

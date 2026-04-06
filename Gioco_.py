@@ -4,7 +4,7 @@ import random
 from Muri import Muri_
 from GameOver import GameOver_
 from win_screen import WinScreen_
-from Pausa import PauseView
+#from Pausa import PauseView
 
 #https://api.arcade.academy/en/stable/tutorials/platform_tutorial/step_07.html
 #sito con tutta la documentazione necessaria per il mio gioco
@@ -191,6 +191,7 @@ class MyGame(arcade.Window):
         self.moneta_list.draw()
 
         Muri_().wall_list.draw()
+        Muri_().on_draw()
         self.camera.use()
         self.testo_score_monete.draw()
         self.testo_score_diamanti.draw()
