@@ -4,65 +4,69 @@ import random
 from Muri import Muri_
 from GameOver import GameOver_
 from win_screen import WinScreen_
-#from Pausa import PauseView
-#from Menu import MenuView
+from Pausa import PauseView
+
 
 
 
 class MyGame(arcade.Window):
-    SCREEN_WIDTH : int = 900
-    SCREEN_HEIGHT : int = 600
-    COLLEZIONABILI_WIDTH : int = 32
-    COLLEZIONABILI_HEIGHT : int = 32
+
+    SCREEN_WIDTH   = 900
+    SCREEN_HEIGHT   = 600
+    COLLEZIONABILI_WIDTH   = 32
+    COLLEZIONABILI_HEIGHT   = 32
     
 
     def __init__(self, width, height, title):
-
         
         super().__init__(width, height, title)
 
+        #lista macchine e collezzionabili
         self.macchina_list = arcade.SpriteList()
-        self.moneta_list = arcade.SpriteList()
-        
+        self.coll_list = arcade.SpriteList()
         
         #scala
-        self.tile_scaling : int | float = 0.5
+        self.tile_scaling = 0.5
+
         #fisica
-        self.gravity : int | float = 1
-        self.jump_speed : int | float = 20
+        self.gravity = 1
+        #self.jump_speed = 20
 
         #movimento
-        self.velocita : int | float | bool = None
-        self.velocita_angle : int| float = None
+        self.velocita = 5
+        self.velocita_angle = 2.5
         
         #conta monete e diamanti
-        self.conta_monete_prese : int = 0
-        self.conta_diamanti_presi : int = 0
+        self.conta_monete_prese   = 0
+        self.conta_diamanti_presi   = 0
 
-        self.testo_score_monete : str | bool = None
-        self.testo_score_diamanti : str | bool = None
+        #testo punteggio
+        self.testo_score_monete = None
+        self.testo_score_diamanti = None
 
 
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
-        self.up_pressed : bool = False
-        self.down_pressed : bool = False
-        self.left_pressed : bool = False
-        self.right_pressed : bool = False
+        #tasti premuti
+        self.up_pressed = False
+        self.down_pressed = False
+        self.left_pressed = False
+        self.right_pressed = False
 
+        #stato del gioco
         self.pausa = False
         self.vincitore = False
         self.morto = False
         self.game_over = GameOver_()
         self.win_screen = WinScreen_()
-        #self.wait = PauseView(self)
+        self.wait = PauseView(self)
 
 
 
         self.setup()
 
-
+        #fisica
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri_().wall_list, gravity_constant = self.gravity)
        
         
@@ -73,10 +77,10 @@ class MyGame(arcade.Window):
         #crea macchina
         self.crea_macchina()
 
-        #crea monete iniziali
+        #crea collezzionabili iniziali
         for i in range(5):
-            self.crea_monete(tipo = "oro")
-        self.crea_monete(tipo = "diamante")
+            self.crea_collezzionabili(tipo = "oro")
+        self.crea_collezzionabili(tipo = "diamante")
 
         # Set up the camera
         self.camera = arcade.Camera2D()
@@ -110,37 +114,33 @@ class MyGame(arcade.Window):
 
         
 
-
+    #crea macchina
     def crea_macchina(self):
         self.macchina1 = arcade.Sprite("./immagini/78614.png")
-        self.macchina1.center_x : int = 100
-        self.macchina1.center_y : int = 250
-        self.macchina1.scale_x : int = 1
-        self.macchina1.scale_y : int = 1
-        self.macchina1.angle : int = 0
-        self.velocita : int | float = 5
-        self.velocita_angle : int| float = 2.5
+        self.macchina1.center_x = 100
+        self.macchina1.center_y = 250
+        self.macchina1.scale_x = 1
+        self.macchina1.scale_y = 1
+        self.macchina1.angle = 0
+        self.velocita = 5
+        self.velocita_angle = 2.5
         self.macchina_list.append(self.macchina1)
        
 
 
-    
-    def crea_monete(self, tipo):
+    #crea collezzionabili
+    def crea_collezzionabili(self, tipo):
 
         #print("[" + str(self.conta_monete_prese) + "] == > Creazione monete...")
-
 
         next_x = self.macchina1.center_x
 
         while abs(next_x - self.macchina1.center_x) < 100 :
             next_x = ((MyGame.COLLEZIONABILI_HEIGHT/2) + (self.macchina1.center_x + random.randint(100, (MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)))%(MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)) + self.macchina1.center_x + 1000
 
-        next_y: int = random.randint(200, 500)          
-        
+        next_y  = random.randint(200, 500)
+
         #print("[",self.macchina1.center_x,"][", self.macchina1.center_y,"] = > moneta creata in: [",next_x, "] [", next_y, "]")
-
-
-        
 
         if tipo == "oro":
             self.moneta = arcade.Sprite("./immagini/Moneta_senza_sfondo.png")
@@ -148,7 +148,7 @@ class MyGame(arcade.Window):
             self.moneta.center_y = next_y
             self.moneta.scale = 0.2
             self.moneta.tipo = "oro"
-            self.moneta_list.append(self.moneta)
+            self.collezzionabili_list.append(self.moneta)
 
         if tipo == "diamante":
             self.moneta = arcade.Sprite("./immagini/Diamante.png")
@@ -156,9 +156,9 @@ class MyGame(arcade.Window):
             self.moneta.center_y = next_y
             self.moneta.scale = 0.2
             self.moneta.tipo = "diamante"
-            self.moneta_list.append(self.moneta)
+            self.collezzionabili_list.append(self.moneta)
 
-        
+    #rimuovi collezzionabili
     def rimuovi_moneta(self, Sprite_moneta):
         Sprite_moneta.remove_from_sprite_lists()
         #print("Moneta scomparsa!")
@@ -170,10 +170,10 @@ class MyGame(arcade.Window):
 
 
     def on_draw(self):
-        
-        
+        #pulisco lo schermo
         self.clear()
 
+        #disegno lo sfondo
         arcade.draw_texture_rect(self.background,
                                 arcade.types.Viewport(
                                 self.camera.position[0] - MyGame.SCREEN_WIDTH/2,
@@ -181,17 +181,20 @@ class MyGame(arcade.Window):
                                 MyGame.SCREEN_WIDTH + 100,
                                 MyGame.SCREEN_HEIGHT + 400) 
                                 )
-
+        
+        #disegno macchine, collezzionabili e muri
         self.macchina_list.draw()
-        self.moneta_list.draw()
+        self.collezzionabili_list.draw()
         Muri_().wall_list.draw()
-        #Muri_().on_draw()
-
+        
+        #applico la camera
         self.camera.use()
 
+        #disegno il testo del punteggio
         self.testo_score_monete.draw()
         self.testo_score_diamanti.draw()
 
+        #disegno schermata di game over/vittoria/pausa se necessario
         if self.morto == True:
             self.clear()    
             self.game_over.on_draw()
@@ -200,9 +203,9 @@ class MyGame(arcade.Window):
             self.clear()
             self.win_screen.on_draw()
 
-        # if self.pausa == True:
-        #     self.clear()
-        #     self.wait.on_draw()
+        if self.pausa == True:
+            self.clear()
+            self.wait.on_draw()
 
         
 
@@ -212,25 +215,29 @@ class MyGame(arcade.Window):
     def on_update(self, deltaTime):
         
         
-
+        #aggiorna fisica
         self.physics_engine.update()
         
-        #movimento camera
+        #movimento camera con morto
         if self.morto == False:
             self.camera.position = self.macchina1.position
         else:
             self.camera.position = (1000, 1000)
 
+        #movimento camera con vincitore
+        if self.macchina1.center_x >= 1990:
+            self.vincitore = True
         if self.vincitore == True:
             self.camera.position = (1000, 1000)
             
-        if self.macchina1.center_x >= 1990:
-            self.vincitore = True
+        #movimento camera con pausa
+        if self.pausa == True:
+            self.camera.position = (1000, 1000)
 
         # Calcola movimento in base ai tasti premuti
-        change_x : int | float = 0
-        change_y : int | float = 0
-        change_angle : int | float = 0
+        change_x = 0
+        change_y = 0
+        change_angle = 0
         
         if self.up_pressed:
             if (self.macchina1.angle > 180 or self.macchina1.angle < -180) and self.morto == False:
@@ -254,7 +261,7 @@ class MyGame(arcade.Window):
                 change_x += self.velocita
 
         # Gestione collisioni tra macchina e collezionabili
-        collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)       
+        collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(self.macchina1, self.collezzionabili_list)       
 
         if len(collisioni_macchina_collezzionabili) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
 
@@ -313,9 +320,9 @@ class MyGame(arcade.Window):
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
         elif key == arcade.key.P:
             self.pausa = True
-        elif key == arcade.key.SPACE:  
-            if self.physics_engine.can_jump():
-                self.macchina1.change_y = self.jump_speed
+        # elif key == arcade.key.SPACE:  
+        #     if self.physics_engine.can_jump():
+        #         self.macchina1.change_y = self.jump_speed
                 
 
 
