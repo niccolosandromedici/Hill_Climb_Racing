@@ -23,14 +23,14 @@ class MyGame(arcade.Window):
 
         #lista macchine e collezzionabili
         self.macchina_list = arcade.SpriteList()
-        self.coll_list = arcade.SpriteList()
+        self.collezzionabili_list = arcade.SpriteList()
         
         #scala
         self.tile_scaling = 0.5
 
         #fisica
         self.gravity = 1
-        #self.jump_speed = 20
+        self.jump_speed = 20
 
         #movimento
         self.velocita = 5
@@ -269,14 +269,14 @@ class MyGame(arcade.Window):
                 self.conta_monete_prese += 1
                 self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
                 collisioni_macchina_collezzionabili[0].remove_from_sprite_lists()
-                self.crea_monete(tipo = "oro")
+                self.crea_collezzionabili(tipo = "oro")
                 #print("moneta presa! Punteggio:", self.conta_monete_prese)
 
             elif collisioni_macchina_collezzionabili[0].tipo == "diamante":
                 self.conta_diamanti_presi += 1
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
                 collisioni_macchina_collezzionabili[0].remove_from_sprite_lists()
-                self.crea_monete(tipo = "diamante")
+                self.crea_collezzionabili(tipo = "diamante")
                 #print("Diamante preso! Punteggio:", self.conta_diamanti_presi)
 
 
@@ -320,9 +320,9 @@ class MyGame(arcade.Window):
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
         elif key == arcade.key.P:
             self.pausa = True
-        # elif key == arcade.key.SPACE:  
-        #     if self.physics_engine.can_jump():
-        #         self.macchina1.change_y = self.jump_speed
+        elif key == arcade.key.SPACE:  
+            if self.physics_engine.can_jump():
+                self.macchina1.change_y = self.jump_speed
                 
 
 
