@@ -5,12 +5,8 @@ from Muri import Muri_
 from GameOver import GameOver_
 from win_screen import WinScreen_
 #from Pausa import PauseView
+#from Menu import MenuView
 
-#https://api.arcade.academy/en/stable/tutorials/platform_tutorial/step_07.html
-#sito con tutta la documentazione necessaria per il mio gioco
-
-#https://api.arcade.academy/en/3.3.3/example_code/background_parallax.html
-#sito per errore di parallasse
 
 
 class MyGame(arcade.Window):
@@ -28,13 +24,12 @@ class MyGame(arcade.Window):
         self.macchina_list = arcade.SpriteList()
         self.moneta_list = arcade.SpriteList()
         
-        #suono
-        #self.suono_motore = arcade.load_sound("./immagini/audio_motore.mp3")
+        
         #scala
         self.tile_scaling : int | float = 0.5
         #fisica
         self.gravity : int | float = 1
-        #self.jump_speed : int | float = 20
+        self.jump_speed : int | float = 20
 
         #movimento
         self.velocita : int | float | bool = None
@@ -61,19 +56,13 @@ class MyGame(arcade.Window):
         self.morto = False
         self.game_over = GameOver_()
         self.win_screen = WinScreen_()
-        self.wait = PauseView(self)
+        #self.wait = PauseView(self)
 
 
 
         self.setup()
 
-        # Create a Platformer Physics Engine.
-        # This will handle moving our player as well as collisions between
-        # the player sprite and whatever SpriteList we specify for the walls.
-        # It is important to supply static platforms to the walls parameter. There is a
-        # platforms parameter that is intended for moving platforms.
-        # If a platform is supposed to move, and is added to the walls list,
-        # it will not be moved.
+
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.macchina1, walls = Muri_().wall_list, gravity_constant = self.gravity)
        
         
@@ -101,7 +90,7 @@ class MyGame(arcade.Window):
         self.testo_score_monete = arcade.Text( #testo del punteggio
             text="Monete: " + str(self.conta_monete_prese),
             x = self.macchina1.center_x,
-            y = self.macchina1.center_y + 350,
+            y = self.macchina1.center_y + 300,
             color = arcade.color.BLACK,
             font_size = 24,
             font_name = "Arial", # O il nome del tuo font caricato
@@ -112,7 +101,7 @@ class MyGame(arcade.Window):
         self.testo_score_diamanti = arcade.Text( #testo del punteggio
             text="Diamanti: " + str(self.conta_diamanti_presi),
             x = self.macchina1.center_x,
-            y = self.macchina1.center_y + 300, 
+            y = self.macchina1.center_y + 250, 
             color = arcade.color.BLACK,
             font_size = 24,
             font_name = "Arial", # O il nome del tuo font caricato
@@ -146,7 +135,7 @@ class MyGame(arcade.Window):
         while abs(next_x - self.macchina1.center_x) < 100 :
             next_x = ((MyGame.COLLEZIONABILI_HEIGHT/2) + (self.macchina1.center_x + random.randint(100, (MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)))%(MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)) + self.macchina1.center_x + 1000
 
-        next_y: int = 330          
+        next_y: int = random.randint(200, 500)          
         
         #print("[",self.macchina1.center_x,"][", self.macchina1.center_y,"] = > moneta creata in: [",next_x, "] [", next_y, "]")
 
@@ -185,26 +174,35 @@ class MyGame(arcade.Window):
         
         self.clear()
 
-        arcade.draw_texture_rect(self.background, arcade.types.Viewport( self.camera.position[0] - MyGame.SCREEN_WIDTH/2, self.camera.position[1] - MyGame.SCREEN_HEIGHT/3.2, MyGame.SCREEN_WIDTH + 100, MyGame.SCREEN_HEIGHT + 100) )
+        arcade.draw_texture_rect(self.background,
+                                arcade.types.Viewport(
+                                self.camera.position[0] - MyGame.SCREEN_WIDTH/2,
+                                -100,
+                                MyGame.SCREEN_WIDTH + 100,
+                                MyGame.SCREEN_HEIGHT + 400) 
+                                )
 
         self.macchina_list.draw()
         self.moneta_list.draw()
-
         Muri_().wall_list.draw()
-        Muri_().on_draw()
+        #Muri_().on_draw()
+
         self.camera.use()
+
         self.testo_score_monete.draw()
         self.testo_score_diamanti.draw()
 
         if self.morto == True:
             self.clear()    
             self.game_over.on_draw()
+
         if self.vincitore == True:
             self.clear()
             self.win_screen.on_draw()
-        if self.pausa == True:
-            self.clear()
-            self.wait.on_draw()
+
+        # if self.pausa == True:
+        #     self.clear()
+        #     self.wait.on_draw()
 
         
 
@@ -226,7 +224,7 @@ class MyGame(arcade.Window):
         if self.vincitore == True:
             self.camera.position = (1000, 1000)
             
-        if self.macchina1.center_x >= 9950:
+        if self.macchina1.center_x >= 1990:
             self.vincitore = True
 
         # Calcola movimento in base ai tasti premuti
@@ -256,14 +254,17 @@ class MyGame(arcade.Window):
                 change_x += self.velocita
 
         # Gestione collisioni tra macchina e collezionabili
-        collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)        
+        collisioni_macchina_collezzionabili = arcade.check_for_collision_with_list(self.macchina1, self.moneta_list)       
+
         if len(collisioni_macchina_collezzionabili) > 0: # Vuol dire che il personaggio si è scontrato con qualcosa
+
             if collisioni_macchina_collezzionabili[0].tipo == "oro":
                 self.conta_monete_prese += 1
                 self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
                 collisioni_macchina_collezzionabili[0].remove_from_sprite_lists()
                 self.crea_monete(tipo = "oro")
                 #print("moneta presa! Punteggio:", self.conta_monete_prese)
+
             elif collisioni_macchina_collezzionabili[0].tipo == "diamante":
                 self.conta_diamanti_presi += 1
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
@@ -288,24 +289,12 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.W or key == arcade.key.UP:
-            # if (self.macchina1.angle > 180 or self.macchina1.angle < -180) and self.morto == False:
-            #     self.morto = True
-            # else:
             self.up_pressed = True
         elif key == arcade.key.S or key == arcade.key.DOWN:
-                # if (self.macchina1.angle > 180 or self.macchina1.angle < -180) and self.morto == False:
-                #     self.morto = True    
-                # else:
             self.down_pressed = True
-        elif key == arcade.key.A or key == arcade.key.LEFT:
-            # if (self.macchina1.angle > 180 or self.macchina1.angle < -180) and self.morto == False:
-            #     self.morto = True
-            # else:   
+        elif key == arcade.key.A or key == arcade.key.LEFT:  
             self.left_pressed = True
-        elif key == arcade.key.D or key == arcade.key.RIGHT:
-            # if (self.macchina1.angle > 180 or self.macchina1.angle < -180) and self.morto == False:
-            #     self.morto = True
-            # else:        
+        elif key == arcade.key.D or key == arcade.key.RIGHT:      
             self.right_pressed = True
         elif key == arcade.key.ESCAPE:
             self.close()
@@ -324,9 +313,9 @@ class MyGame(arcade.Window):
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
         elif key == arcade.key.P:
             self.pausa = True
-        #elif key == arcade.key.SPACE:  
-        #    if self.physics_engine.can_jump():
-        #        self.macchina1.change_y = self.jump_speed
+        elif key == arcade.key.SPACE:  
+            if self.physics_engine.can_jump():
+                self.macchina1.change_y = self.jump_speed
                 
 
 
@@ -341,6 +330,7 @@ class MyGame(arcade.Window):
             self.left_pressed = False
         elif key == arcade.key.D or key == arcade.key.RIGHT:
             self.right_pressed = False
+            
       
 
 
