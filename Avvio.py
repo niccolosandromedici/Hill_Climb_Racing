@@ -11,7 +11,6 @@ class Gioco(arcade.Window):
     
 
 def main():
-
     window = Gioco()
     arcade.run()
 

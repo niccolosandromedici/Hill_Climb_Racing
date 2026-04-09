@@ -55,7 +55,6 @@ class MyGame(arcade.View):
         self.right_pressed = False
 
         #stato del gioco
-        self.pausa = False
         self.vincitore = False
         self.morto = False
         self.game_over = GameOver_()
@@ -122,7 +121,7 @@ class MyGame(arcade.View):
         self.macchina1.scale_x = 1
         self.macchina1.scale_y = 1
         self.macchina1.angle = 0
-        self.velocita = 5
+        self.velocita = 10
         self.velocita_angle = 2.5
         self.macchina_list.append(self.macchina1)
        
@@ -201,13 +200,7 @@ class MyGame(arcade.View):
 
         if self.vincitore == True:
             self.clear()
-            self.win_screen.on_draw()
-
-        # if self.pausa == True:
-        #     self.clear()
-        #     self.wait.on_draw()
-
-        
+            self.win_screen.on_draw()     
 
 
 
@@ -228,10 +221,6 @@ class MyGame(arcade.View):
         if self.macchina1.center_x >= 1990:
             self.vincitore = True
         if self.vincitore == True:
-            self.camera.position = (1000, 1000)
-            
-        #movimento camera con pausa
-        if self.pausa == True:
             self.camera.position = (1000, 1000)
 
         # Calcola movimento in base ai tasti premuti
