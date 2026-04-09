@@ -9,7 +9,7 @@ from Pausa import PauseView
 
 
 
-class MyGame(arcade.Window):
+class MyGame(arcade.View):
 
     SCREEN_WIDTH   = 900
     SCREEN_HEIGHT   = 600
@@ -17,9 +17,9 @@ class MyGame(arcade.Window):
     COLLEZIONABILI_HEIGHT   = 32
     
 
-    def __init__(self, width, height, title):
+    def __init__(self):
         
-        super().__init__(width, height, title)
+        super().__init__()
 
         #lista macchine e collezzionabili
         self.macchina_list = arcade.SpriteList()
@@ -203,9 +203,9 @@ class MyGame(arcade.Window):
             self.clear()
             self.win_screen.on_draw()
 
-        if self.pausa == True:
-            self.clear()
-            self.wait.on_draw()
+        # if self.pausa == True:
+        #     self.clear()
+        #     self.wait.on_draw()
 
         
 
@@ -319,7 +319,8 @@ class MyGame(arcade.Window):
                 self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
         elif key == arcade.key.P:
-            self.pausa = True
+            pausa = PauseView(self)
+            self.window.show_view(pausa)
         elif key == arcade.key.SPACE:  
             if self.physics_engine.can_jump():
                 self.macchina1.change_y = self.jump_speed
@@ -347,13 +348,4 @@ class MyGame(arcade.Window):
         
 
 
-def main():
-    game = MyGame(
-        MyGame.SCREEN_WIDTH, MyGame.SCREEN_HEIGHT, "Hill Climb Racing"
-    )
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()
 

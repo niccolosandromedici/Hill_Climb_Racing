@@ -1,6 +1,6 @@
 import arcade
 import math
-import random
+
 
 
 class Muri_(arcade.Sprite):
