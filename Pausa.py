@@ -16,10 +16,13 @@ class PauseView(arcade.View):
             (0, 0, 0, 150)  # nero semitrasparente
         )
         # scriviamo quello che dobbiamo scrivere
-        arcade.draw_text("PAUSA", MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//50, MyGame().camera.position[1],
+        arcade.draw_text("PAUSA",
+                         MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//50, MyGame().camera.position[1],
                          arcade.color.WHITE, font_size=48, anchor_x="center")
-        arcade.draw_text("P: Riprendi    M: Menu principale",
-                         MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//50, MyGame().camera.position[1]-100, arcade.color.LIGHT_GRAY, font_size=16, anchor_x="center")
+        arcade.draw_text("P: Riprendi   M: Menù principale   ESC: Chiudi il gioco",
+                         MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//50, MyGame().camera.position[1]-100,
+                         arcade.color.LIGHT_GRAY, font_size=16, anchor_x="center")
+                         
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.P:
@@ -29,3 +32,6 @@ class PauseView(arcade.View):
             # Torniamo al menu principale (la partita viene abbandonata)
             from Menu import MenuView
             self.window.show_view(MenuView())
+        elif key == arcade.key.ESCAPE:
+            # Chiudiamo la finestra per uscire dal gioco
+            self.window.close()

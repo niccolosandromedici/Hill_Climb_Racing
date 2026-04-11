@@ -8,7 +8,7 @@ class Gioco(arcade.Window):
         menu = MenuView()
         self.show_view(menu)
 
-    
+
 
 def main():
     window = Gioco()

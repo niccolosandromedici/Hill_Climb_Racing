@@ -137,7 +137,7 @@ class MyGame(arcade.View):
         while abs(next_x - self.macchina1.center_x) < 100 :
             next_x = ((MyGame.COLLEZIONABILI_HEIGHT/2) + (self.macchina1.center_x + random.randint(100, (MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)))%(MyGame.SCREEN_WIDTH - MyGame.COLLEZIONABILI_WIDTH)) + self.macchina1.center_x + 1000
 
-        next_y  = random.randint(200, 500)
+        next_y  = random.randint(300, 400)
 
         #print("[",self.macchina1.center_x,"][", self.macchina1.center_y,"] = > moneta creata in: [",next_x, "] [", next_y, "]")
 
