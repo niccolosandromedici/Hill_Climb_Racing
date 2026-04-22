@@ -12,15 +12,17 @@ class PauseView(arcade.View):
         # Poi sovrapponiamo un rettangolo nero semitrasparente
         from Gioco_ import MyGame
         arcade.draw_rect_filled(
-            arcade.XYWH(-200, -200, 10000, 10000),
+            arcade.XYWH(450, 300, 900, 600),
             (0, 0, 0, 150)  # nero semitrasparente
         )
         # scriviamo quello che dobbiamo scrivere
         arcade.draw_text("PAUSA",
-                         MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//50, MyGame().camera.position[1],
+                         480, 350,
+                        # MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//2, MyGame().camera.position[1],
                          arcade.color.WHITE, font_size=48, anchor_x="center")
         arcade.draw_text("P: Riprendi   M: Menù principale   ESC: Chiudi il gioco",
-                         MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//50, MyGame().camera.position[1]-100,
+                         480, 250,
+                         # MyGame().camera.position[0] - MyGame().SCREEN_WIDTH//2, MyGame().camera.position[1]-100,
                          arcade.color.LIGHT_GRAY, font_size=16, anchor_x="center")
                          
 

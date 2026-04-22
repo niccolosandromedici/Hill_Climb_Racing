@@ -11,6 +11,8 @@ from Pausa import PauseView
 
 class MyGame(arcade.View):
 
+    WORLD_WIDTH = 3000
+    WORLD_HEIGHT = 3000
     SCREEN_WIDTH   = 900
     SCREEN_HEIGHT   = 600
     COLLEZIONABILI_WIDTH   = 32
@@ -83,6 +85,7 @@ class MyGame(arcade.View):
 
         # Set up the camera
         self.camera = arcade.Camera2D()
+        self.camera_ui = arcade.Camera2D()
         
 
         #carica sfondo
@@ -166,11 +169,28 @@ class MyGame(arcade.View):
         #print("Diamante scomparso!")
 
 
+    def aggiorna_camera(self):
+
+        cam_x, cam_y = self.camera.position
+
+        # Lerp verso il player
+        target_x = cam_x + (self.macchina1.center_x - cam_x) * 0.1
+        target_y = cam_y + (self.macchina1.center_y - cam_y) * 0.1
+
+        # Clamping ai bordi
+        target_x = max(self.SCREEN_WIDTH / 2, min(target_x, self.WORLD_WIDTH - self.SCREEN_WIDTH / 2))
+        target_y = max(self.SCREEN_HEIGHT / 2, min(target_y, self.WORLD_HEIGHT - self.SCREEN_HEIGHT / 2))
+
+        self.camera.position = (target_x, target_y)
 
 
     def on_draw(self):
         #pulisco lo schermo
         self.clear()
+
+        self.camera.use()
+
+        
 
         #disegno lo sfondo
         arcade.draw_texture_rect(self.background,
@@ -181,19 +201,21 @@ class MyGame(arcade.View):
                                 MyGame.SCREEN_HEIGHT + 400) 
                                 )
         
+        #disegno il testo del punteggio
+        self.testo_score_monete.draw()
+        self.testo_score_diamanti.draw()
+        
         #disegno macchine, collezzionabili e muri
         self.macchina_list.draw()
         self.collezzionabili_list.draw()
         Muri_().wall_list.draw()
         
         #applico la camera
-        self.camera.use()
+        self.camera_ui.use()
 
-        #disegno il testo del punteggio
-        self.testo_score_monete.draw()
-        self.testo_score_diamanti.draw()
+        
 
-        #disegno schermata di game over/vittoria/pausa se necessario
+        #disegno schermata di game over/vittoria se necessario
         if self.morto == True:
             self.clear()    
             self.game_over.on_draw()
@@ -207,7 +229,8 @@ class MyGame(arcade.View):
 
     def on_update(self, deltaTime):
         
-        
+        self.aggiorna_camera()
+
         #aggiorna fisica
         self.physics_engine.update()
         
@@ -293,7 +316,7 @@ class MyGame(arcade.View):
         elif key == arcade.key.D or key == arcade.key.RIGHT:      
             self.right_pressed = True
         elif key == arcade.key.ESCAPE:
-            self.close()
+            self.window.close()
         elif key == arcade.key.R:
                 if self.morto == True or self.vincitore == True:
                     self.morto = False
@@ -308,8 +331,7 @@ class MyGame(arcade.View):
                 self.testo_score_monete.text = f"Monete: {self.conta_monete_prese}"
                 self.testo_score_diamanti.text = f"Diamanti: {self.conta_diamanti_presi}"
         elif key == arcade.key.P:
-            pausa = PauseView(self)
-            self.window.show_view(pausa)
+            self.window.show_view(self.wait)
         elif key == arcade.key.SPACE:  
             if self.physics_engine.can_jump():
                 self.macchina1.change_y = self.jump_speed
