@@ -210,11 +210,6 @@ class MyGame(arcade.View):
         self.collezzionabili_list.draw()
         Muri_().wall_list.draw()
         
-        #applico la camera
-        self.camera_ui.use()
-
-        
-
         #disegno schermata di game over/vittoria se necessario
         if self.morto == True:
             self.clear()    
@@ -222,7 +217,14 @@ class MyGame(arcade.View):
 
         if self.vincitore == True:
             self.clear()
-            self.win_screen.on_draw()     
+            self.win_screen.on_draw()   
+            
+        #applico la camera
+        self.camera_ui.use()
+
+        
+
+          
 
 
 
